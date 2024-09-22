@@ -38,14 +38,14 @@ def toggle_motor_position():
     angle = mainMotorSwitch.angle()
     print("Current motor ANGLE: ", angle)
 
-    # Toggle to 60 degrees (ON) if the motor is close to 0 degrees
-    if -8 <= angle <= 15:
+    # If the motor is moved away from 0, move it to 60 degrees (ON)
+    if (angle >= -8 and angle <= -3) or (angle >= 3 and angle <= 15):
         mainMotorSwitch.run_target(speed=500, target_angle=60, then=Stop.BRAKE, wait=True)
         ev3.speaker.play_notes(['C4/8', 'E4/8', 'G4/4'], 300)  # Play "ON" sound
         return True
 
-    # Toggle to 0 degrees (OFF) if the motor is close to 60 degrees
-    elif 50 <= angle <= 68:
+    # If the motor is moved away from 60, move it back to 0 degrees (OFF)
+    elif (angle >= 50 and angle <= 57) or (angle >= 63 and angle <= 68):
         mainMotorSwitch.run_target(speed=-500, target_angle=0, then=Stop.BRAKE, wait=True)
         ev3.speaker.play_notes(['G4/8', 'E4/8', 'C4/4'], 120)  # Play "OFF" sound
         return False
