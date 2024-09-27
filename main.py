@@ -1,8 +1,8 @@
 #!/usr/bin/env pybricks-micropython
 import urequests
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import Motor, TouchSensor
-from pybricks.parameters import Port, Stop, Direction
+from pybricks.ev3devices import Motor, TouchSensor, ColorSensor
+from pybricks.parameters import Port, Stop, Direction,  Button, Color
 from pybricks.tools import wait
 from pybricks.media.ev3dev import SoundFile
 
@@ -12,14 +12,15 @@ ev3 = EV3Brick()
 # Set speaker options for voice
 ev3.speaker.set_speech_options(
     language="en-us", voice="f2", speed=30, pitch=50)
-ev3.speaker.set_volume(volume=5, which='_all_')
+ev3.speaker.set_volume(volume=2, which='_all_')
 
 # Initialize motors
 mainMotorSwitch = Motor(Port.A, Direction.CLOCKWISE)
 motorB = Motor(Port.B, Direction.CLOCKWISE)
 motorC = Motor(Port.C, Direction.CLOCKWISE)
 
-# Initialize touch sensors
+# Initialize sensors
+cartridge = ColorSensor(Port.S1)
 switch2 = TouchSensor(Port.S2)
 switch3 = TouchSensor(Port.S3)
 switch4 = TouchSensor(Port.S4)
@@ -91,27 +92,30 @@ def make_api_call():
 
 def main():
     ev3.speaker.beep()  # Start signal
-
     while True:
+        # Check the Cartridge inserted
+        current_cartridge = cartridge.color()
+        print(current_cartridge)
         # Check motor position and toggle between ON and OFF
         motor_on = toggle_motor_position()
 
         if motor_on:
-            # If motor is ON, check if any touch sensor is pressed
-            if switch2.pressed():
-                print("Switch 2 is pressed!")
-                ev3.speaker.beep()
-                make_api_call()
+            if current_cartridge == Color.BLUE:
+                # If motor is ON, check if any touch sensor is pressed
+                if switch2.pressed():
+                    print("Switch 2 is pressed!")
+                    ev3.speaker.beep()
+                    make_api_call()
 
-            if switch3.pressed():
-                print("Switch 3 is pressed!")
-                ev3.speaker.beep()
-                make_api_call()
+                if switch3.pressed():
+                    print("Switch 3 is pressed!")
+                    ev3.speaker.beep()
+                    make_api_call()
 
-            if switch4.pressed():
-                print("Switch 4 is pressed!")
-                ev3.speaker.beep()
-                make_api_call()
+                if switch4.pressed():
+                    print("Switch 4 is pressed!")
+                    ev3.speaker.beep()
+                    make_api_call()
 
         # Small delay to avoid overloading the CPU
         wait(100)
