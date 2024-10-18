@@ -35,20 +35,20 @@ const CityCard = ({ city }) => {
         <p className="text-sm text-gray-500">Height: {city.height}</p>
       </div>
       <button
-        href={city.url}
         className="rounded-none bg-[#ff5b00] hover:shadow-lg shadow-gray-800 text-white w-full py-1 mb-2 flex justify-center items-center gap-5"
         onClick={() => handleVisitPanel(city.id)}
       >
         <IoOptionsSharp />
         View Panel
       </button>
-      <button
+      <a
+        target="_blank"
         href={city.url}
         className="rounded-none bg-[#ff5b00] hover:shadow-lg shadow-gray-800 text-white w-full py-1 flex justify-center items-center gap-5"
       >
         <FaCity />
         View City
-      </button>
+      </a>
     </div>
   );
 };
